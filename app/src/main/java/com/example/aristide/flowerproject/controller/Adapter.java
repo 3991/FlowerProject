@@ -21,6 +21,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     private List<ListItem> listData;
     private LayoutInflater inflater;
 
+    private ItemClickCallback itemClickCallback;
+
+    public interface ItemClickCallback {
+        void onItemClick(int p);
+    }
+
+    public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
+        this.itemClickCallback = itemClickCallback;
+    }
+
     public Adapter(List<ListItem> listData, Context context){
         this.inflater = LayoutInflater.from(context);
         this.listData = listData;
@@ -72,7 +82,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         @Override
         public void onClick(View view){
             if(view.getId() == R.id.cont_item_root){
-
+                itemClickCallback.onItemClick(getAdapterPosition());
             }else{
 
             }
