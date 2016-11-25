@@ -23,5 +23,6 @@
         android:padding="16dp"
         android:text="Add Flower"
         android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
         android:textSize="18sp" />
 </LinearLayout>

@@ -11,8 +11,8 @@ import android.widget.Button;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
-import com.example.aristide.flowerproject.model.Data;
-import com.example.aristide.flowerproject.model.ListItem;
+import com.example.aristide.flowerproject.model.Flower;
+import com.example.aristide.flowerproject.model.ListFlowers;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listData = (ArrayList) Data.getListData();
+        listData = (ArrayList) Flower.getListData();
 
         recyclerView = (RecyclerView)findViewById(R.id.rec_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     }
 
     private void addItemToList() {
-        ListItem item = Data.getRandomListItem();
+        ListFlowers item = Flower.getRandomListItem();
         listData.add(item);
         adapter.notifyItemInserted(listData.indexOf(item));
     }
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     @Override
     public void onItemClick(int p) {
-        ListItem item = (ListItem) listData.get(p);
+        ListFlowers item = (ListFlowers) listData.get(p);
 
         Intent i = new Intent(this, FlowerInformationsActivity.class);
 

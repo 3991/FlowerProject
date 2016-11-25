@@ -4,7 +4,7 @@ package com.example.aristide.flowerproject.model;
  * Created by --- on 21/11/2016.
  */
 
-public class ListItem {
+public class ListFlowers {
     private String name;
     private int imageResId;
 
