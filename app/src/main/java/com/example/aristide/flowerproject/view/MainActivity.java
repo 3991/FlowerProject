@@ -1,6 +1,5 @@
 package com.example.aristide.flowerproject.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,12 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
-import com.example.aristide.flowerproject.model.Flower;
 import com.example.aristide.flowerproject.model.ListFlowers;
+import com.example.aristide.flowerproject.model.Plant;
 
 import java.util.ArrayList;
 
@@ -39,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        listFlowers = (ArrayList) ListFlowers.getListFlowers();
+        listFlowers = (ArrayList)ListFlowers.getListFlowers();
+
 
         recyclerView = (RecyclerView)findViewById(R.id.rec_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addItemToList();
+                try {
+                    addPlantToList();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -84,10 +87,10 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         return simpleItemTouchCallback;
     }
 
-    private void addItemToList() {
-        Flower item = ListFlowers.getRandomListItem();
-        listFlowers.add(item);
-        adapter.notifyItemInserted(listFlowers.indexOf(item));
+    private void addPlantToList() throws Exception {
+        Plant plant = adapter.addPlant("test",10);
+        listFlowers.add(plant);
+        adapter.notifyItemInserted(listFlowers.indexOf(plant));
     }
 
     private void deleteItem(final int position) {
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     @Override
     public void onItemClick(int p) {
-        Flower item = (Flower) listFlowers.get(p);
+        Plant item = (Plant) listFlowers.get(p);
 
         Intent i = new Intent(this, FlowerInformationsActivity.class);
 
@@ -119,11 +122,19 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     @Override public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action1:
-
+            case R.id.add_menu_button:
+                try {
+                    adapter.generatePlants();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return true;
-            case R.id.action2:
-               
+            case R.id.generate_menu_button:
+                try {
+                    adapter.addPlant("test", 10);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -2,11 +2,11 @@ package com.example.aristide.flowerproject.model;
 
 /**
  * POJO
- * Each item in the recylerview is an Flower object
+ * Each item in the recylerview is an Plant object
  *
  */
 
-public class Flower {
+public class Plant {
     private String name;
     private int imageResId;
 

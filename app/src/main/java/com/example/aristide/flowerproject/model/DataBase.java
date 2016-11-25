@@ -1,5 +1,6 @@
-package com.example.aristide.flowerproject;
+package com.example.aristide.flowerproject.model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,7 +18,7 @@ import static java.security.AccessController.getContext;
 
 public class DataBase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "MyDatabase";
+    public static final String DATABASE_NAME = "Plants";
 
     public DataBase(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,7 +26,7 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE PLANT(id INT PRIMARY KEY NOT NULL, name VARCHAR(100), days INT)");
+        db.execSQL("CREATE TABLE "+FlowerTable.TABLE_NAME+"(id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(100), days INT)");
     }
 
     @Override
@@ -34,8 +35,9 @@ public class DataBase extends SQLiteOpenHelper {
     }
 
     static class FlowerTable implements BaseColumns {
-        public static final String TABLE_NAME = "PLANT";
+        public static final String TABLE_NAME = "Plant";
         public static final String PLANT_NAME = "name";
+        public static final String DAYS_NUMBER = "days";
     }
 
     public ArrayList<String> getFlowers() {
@@ -43,7 +45,7 @@ public class DataBase extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getReadableDatabase();
         String[] fields = {
-                FlowerTable.PLANT_NAME
+                FlowerTable.PLANT_NAME, FlowerTable.DAYS_NUMBER
         };
         Cursor cursor = db.query(FlowerTable.TABLE_NAME, fields, null, null, null, null, null);
 
@@ -54,5 +56,13 @@ public class DataBase extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return names;
+    }
+
+    public long putPlant(String name, int days) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(FlowerTable.PLANT_NAME, name);
+        values.put(FlowerTable.DAYS_NUMBER, days);
+        return db.insert(FlowerTable.TABLE_NAME, null, values);
     }
 }

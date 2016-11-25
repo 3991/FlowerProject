@@ -9,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.aristide.flowerproject.R;
-import com.example.aristide.flowerproject.model.Flower;
+import com.example.aristide.flowerproject.model.DataBase;
+import com.example.aristide.flowerproject.model.Plant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,8 +20,11 @@ import java.util.List;
  */
 
 public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
-    private List<Flower> listData;
+    private List<Plant> listPlants;
     private LayoutInflater inflater;
+    private DataBase database;
+
+    private static final int _ERROR = -1;
 
     private ItemClickCallback itemClickCallback;
 
@@ -31,9 +36,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         this.itemClickCallback = itemClickCallback;
     }
 
-    public Adapter(List<Flower> listData, Context context){
+    public Adapter(List<Plant> listPlants, Context context){
         this.inflater = LayoutInflater.from(context);
-        this.listData = listData;
+        this.listPlants = listPlants;
+        database = new DataBase(context);
     }
 
     @Override
@@ -44,25 +50,62 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        Flower item = listData.get(position);
+        Plant item = listPlants.get(position);
         holder.name.setText(item.getName());
         holder.icon_flower.setImageResource(item.getImageResId());
-        holder.icon_edit.setImageResource(item.getImageResId());
-        holder.icon_del.setImageResource(item.getImageResId());
     }
 
     @Override
     public int getItemCount() {
-        return listData.size();
+        return listPlants.size();
+    }
+
+    public void generatePlants() throws Exception {
+        String[] titles = {"Bambous",
+                "Fleurs de saison" ,
+                "Gazon" ,
+                "Plantes de haie",
+                "Rosiers",
+                "Plantes grimpantes",
+                "Arbres",
+                "Arbres fruitiers",
+                "Arbustes",
+                "Plantes potagères" };
+
+        for (int x = 0; x < titles.length; x++) {
+            if(database.putPlant(titles[x], 10) != _ERROR){
+                Plant item = new Plant();
+                item.setImageResId(R.drawable.red_flower);
+                item.setName(titles[x]);
+                listPlants.add(item);
+            }else{
+                throw new Exception("Error to put a new plant");
+            }
+        }
+    }
+    public Plant addPlant(String name, int days) throws Exception {
+        Plant item = new Plant();
+        if(database.putPlant(name, days) != _ERROR){
+            item.setImageResId(R.drawable.red_flower);
+            item.setName(name);
+
+            listPlants.add(item);
+        }else{
+            throw new Exception("Error to put a new plant");
+        }
+
+        return item;
+    }
+
+    public ArrayList<String> getFlowers(){
+       return database.getFlowers();
     }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView name;
         private TextView days;
         private ImageView icon_flower;
-        private ImageView icon_del;
-        private ImageView icon_edit;
-        private ImageView icon_see;
+
         private View container;
 
         public Holder(View itemView) {
@@ -71,10 +114,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             name = (TextView)itemView.findViewById(R.id.lbl_text_name);
             days = (TextView)itemView.findViewById(R.id.lbl_text_days);
             icon_flower = (ImageView)itemView.findViewById(R.id.im_icon_flower);
-            icon_del = (ImageView)itemView.findViewById(R.id.im_icon_del);
-            icon_edit = (ImageView)itemView.findViewById(R.id.im_icon_edit);
-            icon_see = (ImageView)itemView.findViewById(R.id.im_icon_edit);
-            icon_see.setOnClickListener(this);
+
             container = itemView.findViewById(R.id.cont_item_root);
             container.setOnClickListener(this);
         }
