@@ -1,26 +1,47 @@
 package com.example.aristide.flowerproject.model;
 
+import com.example.aristide.flowerproject.R;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Created by --- on 21/11/2016.
  */
 
 public class ListFlowers {
-    private String name;
-    private int imageResId;
+    private static final String[] titles = {"Tulipe", "Rose", "Herbe"};
 
-    public String getName() {
-        return name;
+    public static List<Flower> getListData(){
+        List<Flower> data = new ArrayList<>();
+
+        //Repeat process 4 times, so that we have enough data to demonstrate a scrollable
+        //RecyclerView
+        /*for (int x = 0; x < 4; x++) {
+            //create Flower with dummy data, then add them to our List
+            for (int i = 0; (i < titles.length) && (i < icons.length); i++) {
+                Flower item = new Flower();
+                item.setImageResId(R.drawable.red_flower);
+                //item.setImageResId(icons[i]);
+                item.setName(titles[i]);
+                data.add(item);
+            }
+        }*/
+        Flower item = new Flower();
+        item.setImageResId(R.drawable.red_flower);
+        item.setName(titles[1]);
+        data.add(item);
+        return data;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public static Flower getRandomListItem(){
+        int rand = new Random().nextInt(3);
 
-    public int getImageResId() {
-        return imageResId;
-    }
+        Flower item = new Flower();
 
-    public void setImageResId(int imageResId) {
-        this.imageResId = imageResId;
+        item.setName(titles[rand]);
+
+        return item;
     }
 }

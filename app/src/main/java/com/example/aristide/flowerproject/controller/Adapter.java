@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.aristide.flowerproject.R;
-import com.example.aristide.flowerproject.model.ListFlowers;
+import com.example.aristide.flowerproject.model.Flower;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
-    private List<ListFlowers> listData;
+    private List<Flower> listData;
     private LayoutInflater inflater;
 
     private ItemClickCallback itemClickCallback;
@@ -31,7 +31,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         this.itemClickCallback = itemClickCallback;
     }
 
-    public Adapter(List<ListFlowers> listData, Context context){
+    public Adapter(List<Flower> listData, Context context){
         this.inflater = LayoutInflater.from(context);
         this.listData = listData;
     }
@@ -44,7 +44,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        ListFlowers item = listData.get(position);
+        Flower item = listData.get(position);
         holder.name.setText(item.getName());
         holder.icon_flower.setImageResource(item.getImageResId());
         holder.icon_edit.setImageResource(item.getImageResId());

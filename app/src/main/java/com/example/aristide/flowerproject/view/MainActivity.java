@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listData = (ArrayList) Flower.getListData();
+        listData = (ArrayList) ListFlowers.getListData();
 
         recyclerView = (RecyclerView)findViewById(R.id.rec_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     }
 
     private void addItemToList() {
-        ListFlowers item = Flower.getRandomListItem();
+        Flower item = ListFlowers.getRandomListItem();
         listData.add(item);
         adapter.notifyItemInserted(listData.indexOf(item));
     }
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     @Override
     public void onItemClick(int p) {
-        ListFlowers item = (ListFlowers) listData.get(p);
+        Flower item = (Flower) listData.get(p);
 
         Intent i = new Intent(this, FlowerInformationsActivity.class);
 
