@@ -1,10 +1,16 @@
 package com.example.aristide.flowerproject.model;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
+
 import com.example.aristide.flowerproject.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static java.security.AccessController.getContext;
 
 /**
  * Created by --- on 21/11/2016.
@@ -13,7 +19,7 @@ import java.util.Random;
 public class ListFlowers {
     private static final String[] titles = {"Tulipe", "Rose", "Herbe"};
 
-    public static List<Flower> getListData(){
+    public static List<Flower> getListFlowers(){
         List<Flower> data = new ArrayList<>();
 
         //Repeat process 4 times, so that we have enough data to demonstrate a scrollable
@@ -30,6 +36,7 @@ public class ListFlowers {
         }*/
         Flower item = new Flower();
         item.setImageResId(R.drawable.red_flower);
+
         item.setName(titles[1]);
         data.add(item);
         return data;

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">FlowerProject</string>
+    <string name="app_name">Arrosage</string>
+    <string name="generate_button">Générer</string>
+    <string name="add_button">Ajouter</string>
 </resources>

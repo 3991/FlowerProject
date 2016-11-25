@@ -1,7 +1,9 @@
 package com.example.aristide.flowerproject.model;
 
 /**
- * Created by --- on 21/11/2016.
+ * POJO
+ * Each item in the recylerview is an Flower object
+ *
  */
 
 public class Flower {

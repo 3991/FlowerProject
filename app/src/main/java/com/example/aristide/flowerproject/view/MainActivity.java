@@ -1,13 +1,19 @@
 package com.example.aristide.flowerproject.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
@@ -23,19 +29,22 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     private RecyclerView recyclerView;
     private Adapter adapter;
-    private ArrayList listData;
+    private ArrayList listFlowers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listData = (ArrayList) ListFlowers.getListData();
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        listFlowers = (ArrayList) ListFlowers.getListFlowers();
 
         recyclerView = (RecyclerView)findViewById(R.id.rec_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new Adapter(listData, this);
+        adapter = new Adapter(listFlowers, this);
         recyclerView.setAdapter(adapter);
         adapter.setItemClickCallback(this);
 
@@ -51,6 +60,11 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         });
     }
 
+    /**
+     * To add a swipe.
+     * It works with a RecyclerView and a Callback class.
+     * @return
+     */
     private ItemTouchHelper.Callback createHelperCallback() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
@@ -72,18 +86,19 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     private void addItemToList() {
         Flower item = ListFlowers.getRandomListItem();
-        listData.add(item);
-        adapter.notifyItemInserted(listData.indexOf(item));
+        listFlowers.add(item);
+        adapter.notifyItemInserted(listFlowers.indexOf(item));
     }
 
     private void deleteItem(final int position) {
-        listData.remove(position);
+        listFlowers.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
+
     @Override
     public void onItemClick(int p) {
-        Flower item = (Flower) listData.get(p);
+        Flower item = (Flower) listFlowers.get(p);
 
         Intent i = new Intent(this, FlowerInformationsActivity.class);
 
@@ -93,5 +108,25 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         i.putExtra(BUNDLE_EXTRAS, extras);
 
         startActivity(i);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action1:
+
+                return true;
+            case R.id.action2:
+               
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

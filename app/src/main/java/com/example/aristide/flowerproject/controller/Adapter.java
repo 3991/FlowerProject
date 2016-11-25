@@ -14,7 +14,7 @@ import com.example.aristide.flowerproject.model.Flower;
 import java.util.List;
 
 /**
- * Created by --- on 21/11/2016.
+ * Class between the data and the view
  */
 
 public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
