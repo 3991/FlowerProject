@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.FlowerInformationsActivity"></activity>
+        <activity android:name=".view.AddPlantActitvy"></activity>
     </application>
 
 </manifest>

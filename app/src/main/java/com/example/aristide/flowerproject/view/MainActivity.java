@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String EXTRA_QUOTE = "EXTRA_QUOTE";
     private static final String EXTRA_ATTR = "EXTRA_ATTR";
+    private static final int ADD_PLANT_ACTIVITY = 2;
 
     private RecyclerView recyclerView;
     private Adapter adapter;
@@ -104,7 +106,10 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         adapter.notifyItemRemoved(position);
     }
 
-
+    /**
+     *
+     * @param p
+     */
     @Override
     public void onItemClick(int p) {
         Plant item = (Plant) listFlowers.get(p);
@@ -113,26 +118,36 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
         Bundle extras = new Bundle();
         extras.putString(EXTRA_QUOTE, item.getName());
-        //extras.putString(EXTRA_ATTR, item.getSubTitle());
+        //extras.putString(EXTRA_ATTR, String.valueOf(item.getDays()));
         i.putExtra(BUNDLE_EXTRAS, extras);
 
         startActivity(i);
     }
 
+    /**
+     *
+     * @param menu
+     * @return
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
 
+    /**
+     *
+     * @param menu
+     * @return
+     */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem menu) {
 
-        switch (item.getItemId()) {
+        switch (menu.getItemId()) {
             case R.id.add_menu_button:
                 try {
-                    addPlantToList();
-                    //adapter.generatePlants();
+                    Intent i = new Intent(getApplicationContext(), AddPlantActitvy.class);
+                    startActivityForResult(i, ADD_PLANT_ACTIVITY);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -145,7 +160,22 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                 }
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected(menu);
         }
+    }
+
+    /**
+     * To read the result from newly created activity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == ADD_PLANT_ACTIVITY){
+            String result = (String) data.getExtras().get("result");
+        }
+
     }
 }

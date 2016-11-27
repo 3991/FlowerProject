@@ -6,16 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-
-import java.security.AccessControlContext;
 import java.util.ArrayList;
 
-import static java.security.AccessController.getContext;
+
 
 /**
- * Created by --- on 24/11/2016.
+ *
  */
-
 public class DataBase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Plants";
@@ -40,6 +37,10 @@ public class DataBase extends SQLiteOpenHelper {
         public static final String DAYS_NUMBER = "days";
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<String> getFlowers() {
         ArrayList<String> names = new ArrayList<>();
 
@@ -58,6 +59,12 @@ public class DataBase extends SQLiteOpenHelper {
         return names;
     }
 
+    /**
+     *
+     * @param name
+     * @param days
+     * @return
+     */
     public long putPlant(String name, int days) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();

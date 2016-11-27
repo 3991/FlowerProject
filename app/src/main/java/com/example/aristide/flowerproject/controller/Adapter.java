@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.model.DataBase;
@@ -18,7 +19,6 @@ import java.util.List;
 /**
  * Class between the data and the view
  */
-
 public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     private List<Plant> listPlants;
     private LayoutInflater inflater;
@@ -60,30 +60,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     public int getItemCount() {
         return listPlants.size();
     }
+    
 
-    public void generatePlants() throws Exception {
-        String[] titles = {"Bambous",
-                "Fleurs de saison" ,
-                "Gazon" ,
-                "Plantes de haie",
-                "Rosiers",
-                "Plantes grimpantes",
-                "Arbres",
-                "Arbres fruitiers",
-                "Arbustes",
-                "Plantes potagères" };
-
-        for (int x = 0; x < titles.length; x++) {
-            if(database.putPlant(titles[x], 10) != _ERROR){
-                Plant item = new Plant();
-                item.setImageResId(R.drawable.red_flower);
-                item.setName(titles[x]);
-                listPlants.add(item);
-            }else{
-                throw new Exception("Error to put a new plant");
-            }
-        }
-    }
+    /**
+     *
+     * @param name
+     * @param days
+     * @return
+     * @throws Exception
+     */
     public Plant addPlant(String name, int days) throws Exception {
         Plant item = new Plant();
         if(database.putPlant(name, days) != _ERROR){
@@ -97,6 +82,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         return item;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<String> getFlowers(){
         return database.getFlowers();
     }
@@ -106,6 +95,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         private TextView days;
         private ImageView icon_flower;
         private View container;
+        private Context context;
 
         public Holder(View itemView) {
             super(itemView);
@@ -116,6 +106,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
             container = itemView.findViewById(R.id.cont_item_root);
             container.setOnClickListener(this);
+            this.context = context;
         }
 
         @Override
