@@ -9,6 +9,7 @@ package com.example.aristide.flowerproject.model;
 public class Plant {
     private String name;
     private int imageResId;
+    private int days;
 
     public String getName() {
         return name;
@@ -16,6 +17,14 @@ public class Plant {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
     }
 
     public int getImageResId() {

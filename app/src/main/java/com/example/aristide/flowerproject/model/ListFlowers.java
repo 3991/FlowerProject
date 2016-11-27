@@ -15,10 +15,9 @@ public class ListFlowers {
     public static List<Plant> getListFlowers(){
         List<Plant> data = new ArrayList<>();
 
-
         Plant item = new Plant();
         item.setImageResId(R.drawable.red_flower);
-
+        item.setDays(1);
         item.setName(titles[1]);
         data.add(item);
         return data;

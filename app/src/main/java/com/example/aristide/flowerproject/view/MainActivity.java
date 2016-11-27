@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                         ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
-
                     @Override
                     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                         return false;
@@ -89,8 +88,15 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     private void addPlantToList() throws Exception {
         Plant plant = adapter.addPlant("test",10);
-        listFlowers.add(plant);
         adapter.notifyItemInserted(listFlowers.indexOf(plant));
+    }
+
+    private void generatePlantToList() throws Exception {
+        String[] titles = {"Tulipe", "Rose", "Herbe", "Basilic", "Bleuet", "Roquette", "Trèfle", "Jasmine", "Lavande", "Lilas"};
+        for(int i=0; i<10; i++){
+            Plant plant = adapter.addPlant(titles[i],i);
+            adapter.notifyItemInserted(listFlowers.indexOf(plant));
+        }
     }
 
     private void deleteItem(final int position) {
@@ -119,19 +125,21 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         return true;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
             case R.id.add_menu_button:
                 try {
-                    adapter.generatePlants();
+                    addPlantToList();
+                    //adapter.generatePlants();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return true;
             case R.id.generate_menu_button:
                 try {
-                    adapter.addPlant("test", 10);
+                    generatePlantToList();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

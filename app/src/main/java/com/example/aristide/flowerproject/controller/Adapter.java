@@ -52,6 +52,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     public void onBindViewHolder(Holder holder, int position) {
         Plant item = listPlants.get(position);
         holder.name.setText(item.getName());
+        holder.days.setText(String.valueOf(item.getDays()));
         holder.icon_flower.setImageResource(item.getImageResId());
     }
 
@@ -88,24 +89,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         if(database.putPlant(name, days) != _ERROR){
             item.setImageResId(R.drawable.red_flower);
             item.setName(name);
-
+            item.setDays(days);
             listPlants.add(item);
         }else{
             throw new Exception("Error to put a new plant");
         }
-
         return item;
     }
 
     public ArrayList<String> getFlowers(){
-       return database.getFlowers();
+        return database.getFlowers();
     }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView name;
         private TextView days;
         private ImageView icon_flower;
-
         private View container;
 
         public Holder(View itemView) {
