@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".view.MainActivity">
+    tools:context=".activity.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -17,7 +17,7 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

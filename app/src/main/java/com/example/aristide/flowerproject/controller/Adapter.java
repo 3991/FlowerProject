@@ -1,7 +1,9 @@
 package com.example.aristide.flowerproject.controller;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         this.inflater = LayoutInflater.from(context);
         this.listPlants = listPlants;
         database = new DataBase(context);
+    }
+
+    public void init() throws Exception {
+        for(Plant ob : listPlants){
+            addPlant(ob.getName(), ob.getDays());
+        }
     }
 
     @Override
@@ -82,6 +90,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         return item;
     }
 
+    public void test(){
+        String[] cv = database.selectPlant(3);
+        Log.wtf("TAG", cv[0]);
+
+    }
     /**
      *
      * @return

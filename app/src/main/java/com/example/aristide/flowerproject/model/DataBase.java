@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 
@@ -23,7 +25,7 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+FlowerTable.TABLE_NAME+"(id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(100), days INT)");
+        db.execSQL("CREATE TABLE "+FlowerTable.TABLE_NAME+"(id INTEGER PRIMARY KEY autoincrement, name VARCHAR(100), days INT)");
     }
 
     @Override
@@ -71,5 +73,31 @@ public class DataBase extends SQLiteOpenHelper {
         values.put(FlowerTable.PLANT_NAME, name);
         values.put(FlowerTable.DAYS_NUMBER, days);
         return db.insert(FlowerTable.TABLE_NAME, null, values);
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public String[] selectPlant(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        if (db == null) {
+            return null;
+        }
+        String[] row = {"",""};
+        Cursor cursor = db.rawQuery("SELECT name, days FROM Plant WHERE id = ?", new String[] { String.valueOf(id) });
+
+        if(cursor != null){
+            if (cursor.moveToNext()) {
+                Log.d("SIZE", String.valueOf(cursor.getInt(1)));Log.d("SIZE2", cursor.getString(0));
+                row[0] = cursor.getString(0);
+                row[1] = String.valueOf(cursor.getInt(1));
+            }
+            cursor.close();
+            db.close();
+
+        }
+
+        return row;
     }
 }

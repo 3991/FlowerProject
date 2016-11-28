@@ -1,4 +1,4 @@
-package com.example.aristide.flowerproject.view;
+package com.example.aristide.flowerproject.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,12 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
@@ -39,12 +37,17 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        listFlowers = (ArrayList)ListFlowers.getListFlowers();
+        listFlowers = new ArrayList();
 
         recyclerView = (RecyclerView)findViewById(R.id.rec_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new Adapter(listFlowers, this);
+        try {
+            adapter.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         recyclerView.setAdapter(adapter);
         adapter.setItemClickCallback(this);
 
@@ -76,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     }
 
     private void addPlantToList() throws Exception {
-        Plant plant = adapter.addPlant("test",10);
+        Plant plant = adapter.addPlant("testg",12);
         adapter.notifyItemInserted(listFlowers.indexOf(plant));
     }
 
@@ -94,18 +97,19 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     }
 
     /**
-     *
+     * recyclerview
      * @param p
      */
     @Override
-    public void onItemClick(int p) {System.out.println("WHEW");
+    public void onItemClick(int p) {
         Plant item = (Plant) listFlowers.get(p);
 
         Intent i = new Intent(this, FlowerInformationsActivity.class);
 
         Bundle extras = new Bundle();
         extras.putString(EXTRA_QUOTE, item.getName());
-        //extras.putString(EXTRA_ATTR, String.valueOf(item.getDays()));
+        extras.putString(EXTRA_ATTR, String.valueOf(item.getDays()));
+
         i.putExtra(BUNDLE_EXTRAS, extras);
 
         startActivity(i);
@@ -132,12 +136,14 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
         switch (menu.getItemId()) {
             case R.id.add_menu_button:
-                try {
-                    Intent i = new Intent(getApplicationContext(), AddPlantActitvy.class);
-                    startActivityForResult(i, ADD_PLANT_ACTIVITY);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                //try {
+                    adapter.test();
+                    /*Intent i = new Intent(getApplicationContext(), AddPlantActitvy.class);
+
+                    startActivityForResult(i, ADD_PLANT_ACTIVITY);*/
+                //} catch (Exception e) {
+                   //e.printStackTrace();
+                //}
                 return true;
             case R.id.generate_menu_button:
                 try {
