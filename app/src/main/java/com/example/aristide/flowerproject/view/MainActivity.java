@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
         listFlowers = (ArrayList)ListFlowers.getListFlowers();
 
-
         recyclerView = (RecyclerView)findViewById(R.id.rec_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -51,18 +50,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        Button addItem = (Button) findViewById(R.id.btn_add_item);
-        addItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    addPlantToList();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     /**
@@ -111,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
      * @param p
      */
     @Override
-    public void onItemClick(int p) {
+    public void onItemClick(int p) {System.out.println("WHEW");
         Plant item = (Plant) listFlowers.get(p);
 
         Intent i = new Intent(this, FlowerInformationsActivity.class);
@@ -176,6 +163,5 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         if(resultCode == ADD_PLANT_ACTIVITY){
             String result = (String) data.getExtras().get("result");
         }
-
     }
 }

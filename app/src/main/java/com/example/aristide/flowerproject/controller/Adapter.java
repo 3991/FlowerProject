@@ -43,7 +43,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     }
 
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Adapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.list_item, parent, false);
         return new Holder(view);
     }
@@ -60,7 +60,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     public int getItemCount() {
         return listPlants.size();
     }
-    
+
 
     /**
      *
@@ -95,7 +95,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         private TextView days;
         private ImageView icon_flower;
         private View container;
-        private Context context;
 
         public Holder(View itemView) {
             super(itemView);
@@ -106,7 +105,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
             container = itemView.findViewById(R.id.cont_item_root);
             container.setOnClickListener(this);
-            this.context = context;
         }
 
         @Override
