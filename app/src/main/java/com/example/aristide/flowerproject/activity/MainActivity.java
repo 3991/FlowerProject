@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String EXTRA_QUOTE = "EXTRA_QUOTE";
     private static final String EXTRA_ATTR = "EXTRA_ATTR";
-    private static final int ADD_PLANT_ACTIVITY = 2;
+    public static final int ADD_PLANT_ACTIVITY = 2;
+    public static final int EDIT_PLANT_ACTIVITY = 3;
 
     private RecyclerView recyclerView;
     private Adapter adapter;
@@ -104,15 +105,17 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     public void onItemClick(int p) {
         Plant item = (Plant) listFlowers.get(p);
 
-        Intent i = new Intent(this, FlowerInformationsActivity.class);
+        Intent intent = new Intent(getApplicationContext(), FlowerInformationsActivity.class);
 
         Bundle extras = new Bundle();
         extras.putString(EXTRA_QUOTE, item.getName());
         extras.putString(EXTRA_ATTR, String.valueOf(item.getDays()));
 
-        i.putExtra(BUNDLE_EXTRAS, extras);
+        intent.putExtra(BUNDLE_EXTRAS, extras);
 
-        startActivity(i);
+        //startActivity(i);
+
+        startActivityForResult(intent, EDIT_PLANT_ACTIVITY);
     }
 
     /**
@@ -166,8 +169,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == ADD_PLANT_ACTIVITY){
-            String result = (String) data.getExtras().get("result");
+        if(resultCode == EDIT_PLANT_ACTIVITY){
+            String result = data.getStringExtra("name");
+            Log.d("HOLA", result+"ggg");
         }
     }
 }

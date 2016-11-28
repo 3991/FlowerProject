@@ -1,5 +1,6 @@
 package com.example.aristide.flowerproject.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,9 @@ public class FlowerInformationsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
 
+
+
+
         //((TextView)findViewById(R.id.lbl_plant_name)).setText(extras.getString(EXTRA_QUOTE));
         //((TextView)findViewById(R.id.lbl_plant_day)).setText(extras.getString(EXTRA_ATTR));
 
@@ -37,12 +41,17 @@ public class FlowerInformationsActivity extends AppCompatActivity {
         final EditText editTextNumberInput = (EditText) this.findViewById(R.id.editTextNumberInput);
         editTextNumberInput.setText(extras.getString(EXTRA_ATTR));
 
+        Intent i = new Intent();
+        i.putExtra("name", editTextPlainTextInput.getText().toString());
+        setResult(MainActivity.EDIT_PLANT_ACTIVITY,i);
+
         Button modifPlant = (Button) findViewById(R.id.btn_edit_plant);
         modifPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
 
+                    finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
