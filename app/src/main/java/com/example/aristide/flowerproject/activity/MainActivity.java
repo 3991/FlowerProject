@@ -108,8 +108,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         Intent intent = new Intent(getApplicationContext(), FlowerInformationsActivity.class);
 
         Bundle extras = new Bundle();
-        extras.putString(EXTRA_QUOTE, item.getName());
-        extras.putString(EXTRA_ATTR, String.valueOf(item.getDays()));
+        extras.putInt("ID", p);
+        extras.putString("NAME", item.getName());
+        extras.putString("DAYS", String.valueOf(item.getDays()));
 
         intent.putExtra(BUNDLE_EXTRAS, extras);
 
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     /**
      *
      * @param menu
-     * @return
+     * @return boolean
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem menu) {
@@ -170,8 +171,15 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == EDIT_PLANT_ACTIVITY){
-            String result = data.getStringExtra("name");
-            Log.d("HOLA", result+"ggg");
+            String name = data.getStringExtra("NAME");
+            int days = data.getIntExtra("DAYS", 0);
+            int id = data.getIntExtra("ID", 0);
+            try {
+                adapter.update(id, name, days);
+                adapter.notifyItemChanged(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

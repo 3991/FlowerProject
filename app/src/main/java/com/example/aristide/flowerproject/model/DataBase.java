@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.example.aristide.flowerproject.activity.MainActivity;
+import com.example.aristide.flowerproject.controller.Adapter;
+
 import java.util.ArrayList;
 
 
@@ -72,7 +75,9 @@ public class DataBase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(FlowerTable.PLANT_NAME, name);
         values.put(FlowerTable.DAYS_NUMBER, days);
-        return db.insert(FlowerTable.TABLE_NAME, null, values);
+        long result = db.insert(FlowerTable.TABLE_NAME, null, values);
+        db.close();
+        return result;
     }
 
     /**
@@ -94,10 +99,26 @@ public class DataBase extends SQLiteOpenHelper {
                 row[1] = String.valueOf(cursor.getInt(1));
             }
             cursor.close();
-            db.close();
 
         }
-
+        db.close();
         return row;
+    }
+
+    /**
+     * Updates a row in the database
+     * @param id
+     * @param name The new name value
+     * @param days The new days value
+     */
+    public long updatePlant(int id, String name, int days) {
+        SQLiteDatabase db = getWritableDatabase();
+        if (db == null) return Adapter._ERROR;
+        ContentValues row = new ContentValues();
+        row.put("name", name);
+        row.put("days", days);
+        long result = db.update(FlowerTable.TABLE_NAME, row, "id = ?", new String[] { String.valueOf(id) } );
+        db.close();
+        return result;
     }
 }

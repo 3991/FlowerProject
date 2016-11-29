@@ -2,6 +2,7 @@ package com.example.aristide.flowerproject.controller;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     private LayoutInflater inflater;
     private DataBase database;
 
-    private static final int _ERROR = -1;
+    public static final int _ERROR = -1;
 
     private ItemClickCallback itemClickCallback;
 
@@ -95,6 +96,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         Log.wtf("TAG", cv[0]);
 
     }
+
+    /**
+     * Updates a row in the database
+     * @param id
+     * @param name The new name value
+     * @param days The new days value
+     */
+    public void update(int id, String name, int days) throws Exception {
+        Plant item = new Plant();Log.d("CHANGEMENT","heo");
+        if(database.updatePlant(id, name, days) != _ERROR){
+            listPlants.get(id).setName(name);
+            listPlants.get(id).setDays(days);
+            Log.d("CHANGEMENT","ggg"+listPlants.get(2).getName());
+        }else{Log.d("ERROR","ERREOR ???");
+            throw new Exception("Error to put a new plant");
+        }
+    }
+
     /**
      *
      * @return

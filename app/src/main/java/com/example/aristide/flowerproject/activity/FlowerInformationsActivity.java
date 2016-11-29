@@ -26,31 +26,30 @@ public class FlowerInformationsActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
-
-
-
+        final Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
 
         //((TextView)findViewById(R.id.lbl_plant_name)).setText(extras.getString(EXTRA_QUOTE));
         //((TextView)findViewById(R.id.lbl_plant_day)).setText(extras.getString(EXTRA_ATTR));
 
 
         final EditText editTextPlainTextInput = (EditText) this.findViewById(R.id.editTextPlainTextInput);
-        editTextPlainTextInput.setText(extras.getString(EXTRA_QUOTE));
+        editTextPlainTextInput.setText(extras.getString("NAME"));
 
         final EditText editTextNumberInput = (EditText) this.findViewById(R.id.editTextNumberInput);
-        editTextNumberInput.setText(extras.getString(EXTRA_ATTR));
+        editTextNumberInput.setText(extras.getString("DAYS"));
 
-        Intent i = new Intent();
-        i.putExtra("name", editTextPlainTextInput.getText().toString());
-        setResult(MainActivity.EDIT_PLANT_ACTIVITY,i);
+        final int id = extras.getInt("ID");
 
         Button modifPlant = (Button) findViewById(R.id.btn_edit_plant);
         modifPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-
+                    Intent i = new Intent();
+                    i.putExtra("NAME", editTextPlainTextInput.getText().toString());
+                    i.putExtra("DAYS", Integer.valueOf(editTextNumberInput.getText().toString()));
+                    i.putExtra("ID", id);
+                    setResult(MainActivity.EDIT_PLANT_ACTIVITY, i);
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
