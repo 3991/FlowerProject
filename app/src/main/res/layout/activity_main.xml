@@ -13,11 +13,11 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@android:color/holo_green_dark"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/background_light" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

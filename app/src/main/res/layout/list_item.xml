@@ -23,7 +23,6 @@
             android:paddingLeft="6dp"
             android:id="@+id/cont_item_root"
             android:clickable="true"
-            android:background="@color/colorOk"
             >
 
             <ImageView
@@ -54,6 +53,12 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 />
+
+            <ImageView
+                android:id="@+id/im_icon_state"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:src="@drawable/check_icon" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout >

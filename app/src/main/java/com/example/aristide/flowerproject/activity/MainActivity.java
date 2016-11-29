@@ -59,30 +59,28 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     /**
      * To add a swipe.
      * It works with a RecyclerView and a Callback class.
-     * @return
+     * @return ItemTouchHelper.Callback
      */
     private ItemTouchHelper.Callback createHelperCallback() {
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        return new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                        return false;
-                    }
+            @Override
+            public boolean onMove(RecyclerView recyclerView1, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-                    @Override
-                    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        deleteItem(viewHolder.getAdapterPosition());
-                    }
-                };
-        return simpleItemTouchCallback;
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                deleteItem(viewHolder.getAdapterPosition());
+            }
+        };
     }
 
-    private void addPlantToList() throws Exception {
+    /*private void addPlantToList() throws Exception {
         Plant plant = adapter.addPlant("testg",12);
         adapter.notifyItemInserted(listFlowers.indexOf(plant));
-    }
+    }*/
 
     private void generatePlantToList() throws Exception {
         String[] titles = {"Tulipe", "Rose", "Herbe", "Basilic", "Bleuet", "Roquette", "Trèfle", "Jasmine", "Lavande", "Lilas"};
@@ -98,31 +96,30 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     }
 
     /**
-     * recyclerview
-     * @param p
+     * Recyclerview
+     * @param position is the position of the plant in the list
      */
     @Override
-    public void onItemClick(int p) {
-        Plant item = (Plant) listFlowers.get(p);
+    public void onItemClick(int position) {
+        Plant item = (Plant) listFlowers.get(position);
 
         Intent intent = new Intent(getApplicationContext(), FlowerInformationsActivity.class);
 
         Bundle extras = new Bundle();
-        extras.putInt("ID", p);
+        extras.putInt("ID", position);
         extras.putString("NAME", item.getName());
         extras.putString("DAYS", String.valueOf(item.getDays()));
 
         intent.putExtra(BUNDLE_EXTRAS, extras);
 
-        //startActivity(i);
-
         startActivityForResult(intent, EDIT_PLANT_ACTIVITY);
     }
+
 
     /**
      *
      * @param menu
-     * @return
+     * @return boolean
      */
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -140,14 +137,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
         switch (menu.getItemId()) {
             case R.id.add_menu_button:
-                //try {
-                    adapter.test();
-                    /*Intent i = new Intent(getApplicationContext(), AddPlantActitvy.class);
+                Intent intent = new Intent(getApplicationContext(), AddPlantActitvy.class);
 
-                    startActivityForResult(i, ADD_PLANT_ACTIVITY);*/
-                //} catch (Exception e) {
-                   //e.printStackTrace();
-                //}
+                startActivityForResult(intent, ADD_PLANT_ACTIVITY);
                 return true;
             case R.id.generate_menu_button:
                 try {
@@ -180,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else if(resultCode == ADD_PLANT_ACTIVITY){
+
         }
     }
 }

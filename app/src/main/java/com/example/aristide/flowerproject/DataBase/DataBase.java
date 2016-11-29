@@ -1,4 +1,4 @@
-package com.example.aristide.flowerproject.model;
+package com.example.aristide.flowerproject.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,10 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
-
-import com.example.aristide.flowerproject.activity.MainActivity;
 import com.example.aristide.flowerproject.controller.Adapter;
-
 import java.util.ArrayList;
 
 
@@ -70,7 +67,7 @@ public class DataBase extends SQLiteOpenHelper {
      * @param days
      * @return
      */
-    public long putPlant(String name, int days) {
+    public long insertPlant(String name, int days) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(FlowerTable.PLANT_NAME, name);
@@ -94,12 +91,10 @@ public class DataBase extends SQLiteOpenHelper {
 
         if(cursor != null){
             if (cursor.moveToNext()) {
-                Log.d("SIZE", String.valueOf(cursor.getInt(1)));Log.d("SIZE2", cursor.getString(0));
                 row[0] = cursor.getString(0);
                 row[1] = String.valueOf(cursor.getInt(1));
             }
             cursor.close();
-
         }
         db.close();
         return row;

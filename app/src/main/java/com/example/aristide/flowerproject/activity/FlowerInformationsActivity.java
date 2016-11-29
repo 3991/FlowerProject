@@ -25,6 +25,7 @@ public class FlowerInformationsActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        setTitle("Une plante");
 
         final Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
 

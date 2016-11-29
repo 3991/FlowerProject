@@ -1,8 +1,6 @@
 package com.example.aristide.flowerproject.controller;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
-import com.example.aristide.flowerproject.model.DataBase;
+import com.example.aristide.flowerproject.DataBase.DataBase;
 import com.example.aristide.flowerproject.model.Plant;
 
 import java.util.ArrayList;
@@ -80,7 +77,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
      */
     public Plant addPlant(String name, int days) throws Exception {
         Plant item = new Plant();
-        if(database.putPlant(name, days) != _ERROR){
+        if(database.insertPlant(name, days) != _ERROR){
             item.setImageResId(R.drawable.red_flower);
             item.setName(name);
             item.setDays(days);
