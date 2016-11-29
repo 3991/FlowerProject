@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
@@ -115,6 +116,13 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         startActivityForResult(intent, EDIT_PLANT_ACTIVITY);
     }
 
+    /**
+     *
+     * @param position
+     */
+    public void onLongListItemClick(int position) {
+        Log.wtf("PPPP", "onListItemClick id=" + position);
+    }
 
     /**
      *

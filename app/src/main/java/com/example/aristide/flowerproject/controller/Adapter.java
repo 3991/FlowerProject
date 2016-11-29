@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.DataBase.DataBase;
@@ -29,7 +30,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     private ItemClickCallback itemClickCallback;
 
     public interface ItemClickCallback {
-        void onItemClick(int p);
+        void onItemClick(int position);
+        void onLongListItemClick(int position);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
@@ -119,7 +121,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         return database.getFlowers();
     }
 
-    class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class Holder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView name;
         private TextView days;
         private ImageView icon_flower;
@@ -134,15 +136,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
             container = itemView.findViewById(R.id.cont_item_root);
             container.setOnClickListener(this);
+            container.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view){
             if(view.getId() == R.id.cont_item_root){
                 itemClickCallback.onItemClick(getAdapterPosition());
-            }else{
-
             }
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if(view.getId() == R.id.cont_item_root){
+                itemClickCallback.onLongListItemClick(getAdapterPosition());
+                return true;
+            }
+            return false;
         }
     }
 }
