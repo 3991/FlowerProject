@@ -7,9 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
-import com.example.aristide.flowerproject.controller.Adapter;
-import java.util.ArrayList;
 
+import com.example.aristide.flowerproject.controller.Adapter;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -25,7 +29,7 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+FlowerTable.TABLE_NAME+"(id INTEGER PRIMARY KEY autoincrement, name VARCHAR(100), days INT)");
+        db.execSQL("CREATE TABLE "+FlowerTable.TABLE_NAME+"(id INTEGER PRIMARY KEY autoincrement, "+FlowerTable.PLANT_NAME+" VARCHAR(100), "+FlowerTable.FREQUENCY_NUMBER+" INT, "+FlowerTable.LAST_WATER_DATE+" VARCHAR(100))");
     }
 
     @Override
@@ -36,19 +40,20 @@ public class DataBase extends SQLiteOpenHelper {
     static class FlowerTable implements BaseColumns {
         public static final String TABLE_NAME = "Plant";
         public static final String PLANT_NAME = "name";
-        public static final String DAYS_NUMBER = "days";
+        public static final String FREQUENCY_NUMBER = "days";
+        public static final String LAST_WATER_DATE = "date";
     }
 
     /**
      *
-     * @return
+     * @return a list of names
      */
     public ArrayList<String> getFlowers() {
         ArrayList<String> names = new ArrayList<>();
 
         SQLiteDatabase db = getReadableDatabase();
         String[] fields = {
-                FlowerTable.PLANT_NAME, FlowerTable.DAYS_NUMBER
+                FlowerTable.PLANT_NAME, FlowerTable.FREQUENCY_NUMBER, FlowerTable.LAST_WATER_DATE
         };
         Cursor cursor = db.query(FlowerTable.TABLE_NAME, fields, null, null, null, null, null);
 
@@ -62,32 +67,36 @@ public class DataBase extends SQLiteOpenHelper {
     }
 
     /**
-     *
-     * @param name
-     * @param days
-     * @return
+     * To insert a new Plant in the DB
+     * @param name the name of the plant
+     * @param frequency watering frequency
+     * @return result a code from the insert request
      */
-    public long insertPlant(String name, int days) {
+    public long insertPlant(String name, int frequency, String date) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(FlowerTable.PLANT_NAME, name);
-        values.put(FlowerTable.DAYS_NUMBER, days);
+        values.put(FlowerTable.FREQUENCY_NUMBER, frequency);
+        //values.put(FlowerTable.LAST_WATER_DATE, date);
         long result = db.insert(FlowerTable.TABLE_NAME, null, values);
         db.close();
         return result;
     }
 
+
+
     /**
-     *
-     * @param id
+     *  To select the plant by ID
+     * @param id of the plant
+     * @return row a name and the frequency
      */
-    public String[] selectPlant(int id){
+    /*public String[] selectPlant(int id){
         SQLiteDatabase db = getReadableDatabase();
         if (db == null) {
             return null;
         }
         String[] row = {"",""};
-        Cursor cursor = db.rawQuery("SELECT name, days FROM Plant WHERE id = ?", new String[] { String.valueOf(id) });
+        Cursor cursor = db.rawQuery("SELECT name, frequency FROM Plant WHERE id = ?", new String[] { String.valueOf(id) });
 
         if(cursor != null){
             if (cursor.moveToNext()) {
@@ -98,20 +107,22 @@ public class DataBase extends SQLiteOpenHelper {
         }
         db.close();
         return row;
-    }
+    }*/
 
     /**
-     * Updates a row in the database
-     * @param id
+     * Updates a row in the DB
+     * @param id of the plant
      * @param name The new name value
-     * @param days The new days value
+     * @param frequency The new frequency value
+     * @return result a code from the update request
      */
-    public long updatePlant(int id, String name, int days) {
+    public long updatePlant(int id, String name, int frequency, String last_water_date) {
         SQLiteDatabase db = getWritableDatabase();
         if (db == null) return Adapter._ERROR;
         ContentValues row = new ContentValues();
-        row.put("name", name);
-        row.put("days", days);
+        row.put(FlowerTable.PLANT_NAME, name);
+        row.put(FlowerTable.FREQUENCY_NUMBER, frequency);
+        row.put(FlowerTable.LAST_WATER_DATE, last_water_date);
         long result = db.update(FlowerTable.TABLE_NAME, row, "id = ?", new String[] { String.valueOf(id) } );
         db.close();
         return result;

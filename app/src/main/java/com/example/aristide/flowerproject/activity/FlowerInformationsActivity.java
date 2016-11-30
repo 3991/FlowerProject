@@ -39,6 +39,9 @@ public class FlowerInformationsActivity extends AppCompatActivity {
         final EditText editTextNumberInput = (EditText) this.findViewById(R.id.editTextNumberInput);
         editTextNumberInput.setText(extras.getString("DAYS"));
 
+        final EditText editTextDateInput = (EditText) this.findViewById(R.id.editTextDateInput);
+        editTextDateInput.setText(extras.getString("DATE"));
+
         final int id = extras.getInt("ID");
 
         Button modifPlant = (Button) findViewById(R.id.btn_edit_plant);

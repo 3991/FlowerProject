@@ -2,20 +2,19 @@ package com.example.aristide.flowerproject.controller;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.DataBase.DataBase;
 import com.example.aristide.flowerproject.model.Plant;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Class between the data and the view
@@ -46,7 +45,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     public void init() throws Exception {
         for(Plant ob : listPlants){
-            addPlant(ob.getName(), ob.getDays());
+            insertPlant(ob.getName(), ob.getDays());
         }
     }
 
@@ -71,18 +70,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
 
     /**
-     *
+     *  To call DB to insert a new plant
      * @param name
-     * @param days
+     * @param frequency
      * @return
      * @throws Exception
      */
-    public Plant addPlant(String name, int days) throws Exception {
+    public Plant insertPlant(String name, int frequency) throws Exception {
         Plant item = new Plant();
-        if(database.insertPlant(name, days) != _ERROR){
+        String date = getDateTime();
+        if(database.insertPlant(name, frequency, date) != _ERROR){
             item.setImageResId(R.drawable.red_flower);
             item.setName(name);
-            item.setDays(days);
+            item.setDays(frequency);
+            item.setDate(date);
             listPlants.add(item);
         }else{
             throw new Exception("Error to put a new plant");
@@ -90,35 +91,27 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         return item;
     }
 
-    public void test(){
-        String[] cv = database.selectPlant(3);
-        Log.wtf("TAG", cv[0]);
-
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     /**
      * Updates a row in the database
      * @param id
      * @param name The new name value
-     * @param days The new days value
+     * @param frequency The new frequency value
      */
-    public void update(int id, String name, int days) throws Exception {
-        Plant item = new Plant();Log.d("CHANGEMENT","heo");
-        if(database.updatePlant(id, name, days) != _ERROR){
+    public void update(int id, String name, int frequency, String date) throws Exception {
+        if(database.updatePlant(id, name, frequency, date) != _ERROR){
             listPlants.get(id).setName(name);
-            listPlants.get(id).setDays(days);
-            Log.d("CHANGEMENT","ggg"+listPlants.get(2).getName());
-        }else{Log.d("ERROR","ERREOR ???");
-            throw new Exception("Error to put a new plant");
+            listPlants.get(id).setDays(frequency);
+            listPlants.get(id).setDate(date);
+        }else{
+            throw new Exception("Error to update a new plant");
         }
-    }
-
-    /**
-     *
-     * @return
-     */
-    public ArrayList<String> getFlowers(){
-        return database.getFlowers();
     }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

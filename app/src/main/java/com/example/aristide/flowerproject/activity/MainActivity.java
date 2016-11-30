@@ -11,11 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
-import com.example.aristide.flowerproject.model.ListFlowers;
 import com.example.aristide.flowerproject.model.Plant;
 
 import java.util.ArrayList;
@@ -83,10 +81,14 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         adapter.notifyItemInserted(listFlowers.indexOf(plant));
     }*/
 
+    /**
+     *
+     * @throws Exception
+     */
     private void generatePlantToList() throws Exception {
         String[] titles = {"Tulipe", "Rose", "Herbe", "Basilic", "Bleuet", "Roquette", "Trèfle", "Jasmine", "Lavande", "Lilas"};
         for(int i=0; i<10; i++){
-            Plant plant = adapter.addPlant(titles[i],i);
+            Plant plant = adapter.insertPlant(titles[i], i);
             adapter.notifyItemInserted(listFlowers.indexOf(plant));
         }
     }
@@ -109,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         Bundle extras = new Bundle();
         extras.putInt("ID", position);
         extras.putString("NAME", item.getName());
-        extras.putString("DAYS", String.valueOf(item.getDays()));
-
+        extras.putString("DAYS", String.valueOf(item.getDays()));Log.wtf("DATER", item.getDate());
+        extras.putString("DATE", item.getDate());
         intent.putExtra(BUNDLE_EXTRAS, extras);
 
         startActivityForResult(intent, EDIT_PLANT_ACTIVITY);
@@ -121,7 +123,12 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
      * @param position
      */
     public void onLongListItemClick(int position) {
-        Log.wtf("PPPP", "onListItemClick id=" + position);
+        Plant plant = (Plant) listFlowers.get(position);
+        try {
+            adapter.update(position, plant.getName(), plant.getDays(), plant.getDate());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -172,10 +179,11 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == EDIT_PLANT_ACTIVITY){
             String name = data.getStringExtra("NAME");
-            int days = data.getIntExtra("DAYS", 0);
+            String date = data.getStringExtra("DATE");
+            int frequency = data.getIntExtra("DAYS", 0);
             int id = data.getIntExtra("ID", 0);
             try {
-                adapter.update(id, name, days);
+                adapter.update(id, name, frequency, date);
                 adapter.notifyItemChanged(id);
             } catch (Exception e) {
                 e.printStackTrace();
