@@ -26,11 +26,7 @@ public class AddPlantActitvy extends AppCompatActivity {
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         });
     }

@@ -1,5 +1,7 @@
 package com.example.aristide.flowerproject.activity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,16 +9,24 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 
+import java.util.Calendar;
+
 public class FlowerInformationsActivity extends AppCompatActivity {
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String EXTRA_QUOTE = "EXTRA_QUOTE";
     private static final String EXTRA_ATTR = "EXTRA_ATTR";
+
+    private DatePicker datePicker;
+    private Calendar calendar;
+    private TextView dateView;
+    private int year, month, day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +40,8 @@ public class FlowerInformationsActivity extends AppCompatActivity {
         final Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
 
         //((TextView)findViewById(R.id.lbl_plant_name)).setText(extras.getString(EXTRA_QUOTE));
-        //((TextView)findViewById(R.id.lbl_plant_day)).setText(extras.getString(EXTRA_ATTR));
-
+        ((TextView)findViewById(R.id.lbl_plant_day)).setText(extras.getString(EXTRA_ATTR));
+        //((TextView)findViewById(R.id.lbl_plant_day)).getText()
 
         final EditText editTextPlainTextInput = (EditText) this.findViewById(R.id.editTextPlainTextInput);
         editTextPlainTextInput.setText(extras.getString("NAME"));
@@ -39,7 +49,7 @@ public class FlowerInformationsActivity extends AppCompatActivity {
         final EditText editTextNumberInput = (EditText) this.findViewById(R.id.editTextNumberInput);
         editTextNumberInput.setText(extras.getString("DAYS"));
 
-        final EditText editTextDateInput = (EditText) this.findViewById(R.id.editTextDateInput);
+        final TextView editTextDateInput = (TextView) this.findViewById(R.id.textView_date);
         editTextDateInput.setText(extras.getString("DATE"));
 
         final int id = extras.getInt("ID");
@@ -60,5 +70,49 @@ public class FlowerInformationsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        dateView = (TextView) findViewById(R.id.textView_date);
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        showDate(year, month+1, day);
+
+
+    }
+    @SuppressWarnings("deprecation")
+    public void setDate(View view) {
+        showDialog(999);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == 999) {
+            return new DatePickerDialog(this,
+                    myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    /**
+     *
+     */
+    private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker arg0, int year, int month, int day) {
+                    showDate(year, month+1, day);
+                }
+            };
+
+    /**
+     *
+     * @param year
+     * @param month
+     * @param day
+     */
+    private void showDate(int year, int month, int day) {
+        dateView.setText(new StringBuilder().append(day).append("/")
+                .append(month).append("/").append(year));
     }
 }

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     private RecyclerView recyclerView;
     private Adapter adapter;
     private ArrayList listFlowers;
-
+// SUP DS DB APRES SWIPE !!!!!!!!!!!!!!!!!
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

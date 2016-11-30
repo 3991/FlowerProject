@@ -21,7 +21,6 @@
     <ImageView
         android:id="@+id/im_icon_flower"
         android:layout_width="match_parent"
-
         android:layout_height="50dp"
         android:src="@drawable/red_flower"
         android:gravity="center"
@@ -31,9 +30,9 @@
         android:id="@+id/lbl_plant_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_marginTop="10dp"
         android:paddingLeft="8dp"
-        android:text="Nom"
+        android:text="@string/name_textView"
         android:maxLines="1"
         />
 
@@ -41,6 +40,7 @@
         android:id="@+id/editTextPlainTextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:maxLength="10">
     </EditText>
 
@@ -49,8 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:gravity="center"
-        android:text="Fréquence"
+        android:layout_marginTop="20dp"
+        android:text="@string/frequency_textView"
         android:maxLines="1"
         />
 
@@ -58,9 +58,30 @@
         android:id="@+id/editTextNumberInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:inputType="number"  />
 
+    <Button
+        android:id="@+id/edit_date"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:onClick="setDate"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/holo_green_dark"
+        android:textColor="@android:color/white"
+        android:text="@string/edit_date_button" />
+
     <TextView
+        android:id="@+id/textView_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/date_textView"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <!--<TextView
         android:id="@+id/lbl_plant_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,17 +95,17 @@
         android:id="@+id/editTextDateInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date"  />
+        android:inputType="date"  />-->
 
     <Button
         android:id="@+id/btn_edit_plant"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:padding="16dp"
-        android:text="Valider"
+        android:layout_marginTop="20dp"
+        android:text="@string/ok_button"
         android:textColor="@android:color/white"
         android:background="@android:color/holo_green_dark"
         android:textSize="18sp"
         />
-
 </LinearLayout>
