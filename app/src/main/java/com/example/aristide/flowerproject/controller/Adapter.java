@@ -2,6 +2,7 @@ package com.example.aristide.flowerproject.controller;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.example.aristide.flowerproject.DataBase.DataBase;
 import com.example.aristide.flowerproject.model.Plant;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -39,13 +41,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     public Adapter(List<Plant> listPlants, Context context){
         this.inflater = LayoutInflater.from(context);
-        this.listPlants = listPlants;
+
         database = new DataBase(context);
+
+        this.listPlants = database.getFlowers();
     }
 
     public void init() throws Exception {
         for(Plant ob : listPlants){
-            insertPlant(ob.getName(), ob.getDays());
+            insertPlant(ob.getName(), ob.getDays(), ob.getImageState());
         }
     }
 
@@ -76,14 +80,21 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
      * @return
      * @throws Exception
      */
-    public Plant insertPlant(String name, int frequency) throws Exception {
+    public Plant insertPlant(String name, int frequency, int state) throws Exception {
         Plant item = new Plant();
         String date = getDateTime();
-        if(database.insertPlant(name, frequency, date) != _ERROR){
+        if(database.insertPlant(name, frequency, date, state) != _ERROR){
             item.setImageResId(R.drawable.red_flower);
             item.setName(name);
             item.setDays(frequency);
             item.setDate(date);
+            if(state == 1){
+                item.setImageState(R.drawable.check_icon);
+            }else if(state == 2){
+                item.setImageState(R.drawable.warning_orange_icon);
+            }else{
+                item.setImageState(R.drawable.warning_red_icon);
+            }
             listPlants.add(item);
         }else{
             throw new Exception("Error to put a new plant");
@@ -104,14 +115,30 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
      * @param name The new name value
      * @param frequency The new frequency value
      */
-    public void update(int id, String name, int frequency, String date) throws Exception {
-        if(database.updatePlant(id, name, frequency, date) != _ERROR){
+    public void update(int id, String name, int frequency, String date, int state) throws Exception {
+        if(database.updatePlant(id, name, frequency, date, state) != _ERROR){
             listPlants.get(id).setName(name);
             listPlants.get(id).setDays(frequency);
             listPlants.get(id).setDate(date);
+
+            if(state == 1){
+                listPlants.get(id).setImageState(R.drawable.check_icon);
+            }else if(state == 2){
+                listPlants.get(id).setImageState(R.drawable.warning_orange_icon);
+            }else{
+                listPlants.get(id).setImageState(R.drawable.warning_red_icon);
+            }
         }else{
             throw new Exception("Error to update a new plant");
         }
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void deletePlant(int id){
+        database.delete(id);
     }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -143,6 +170,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         public boolean onLongClick(View view) {
             if(view.getId() == R.id.cont_item_root){
                 itemClickCallback.onLongListItemClick(getAdapterPosition());
+
                 return true;
             }
             return false;

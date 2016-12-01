@@ -11,24 +11,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
 import com.example.aristide.flowerproject.model.Plant;
 
 import java.util.ArrayList;
+//SUPP en DB dans SWIPE
+//long clique : mis à jour de l'icone
+//gestion de l'icone en fonction de la date
 
 public class MainActivity extends AppCompatActivity implements Adapter.ItemClickCallback  {
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
-    private static final String EXTRA_QUOTE = "EXTRA_QUOTE";
-    private static final String EXTRA_ATTR = "EXTRA_ATTR";
     public static final int ADD_PLANT_ACTIVITY = 2;
     public static final int EDIT_PLANT_ACTIVITY = 3;
 
     private RecyclerView recyclerView;
     private Adapter adapter;
     private ArrayList listFlowers;
-// SUP DS DB APRES SWIPE !!!!!!!!!!!!!!!!!
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new Adapter(listFlowers, this);
+
         try {
-            adapter.init();
+            //adapter.init();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,15 +72,11 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                deleteItem(viewHolder.getAdapterPosition());
+                listFlowers.remove(viewHolder.getAdapterPosition());
+                adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             }
         };
     }
-
-    /*private void addPlantToList() throws Exception {
-        Plant plant = adapter.addPlant("testg",12);
-        adapter.notifyItemInserted(listFlowers.indexOf(plant));
-    }*/
 
     /**
      *
@@ -88,15 +85,11 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     private void generatePlantToList() throws Exception {
         String[] titles = {"Tulipe", "Rose", "Herbe", "Basilic", "Bleuet", "Roquette", "Trèfle", "Jasmine", "Lavande", "Lilas"};
         for(int i=0; i<10; i++){
-            Plant plant = adapter.insertPlant(titles[i], i);
+            Plant plant = adapter.insertPlant(titles[i], i, 2);
             adapter.notifyItemInserted(listFlowers.indexOf(plant));
         }
     }
 
-    private void deleteItem(final int position) {
-        listFlowers.remove(position);
-        adapter.notifyItemRemoved(position);
-    }
 
     /**
      * Recyclerview
@@ -125,7 +118,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     public void onLongListItemClick(int position) {
         Plant plant = (Plant) listFlowers.get(position);
         try {
-            adapter.update(position, plant.getName(), plant.getDays(), plant.getDate());
+            adapter.update(position, plant.getName(), plant.getDays(), plant.getDate(), 3);
+            adapter.notifyItemChanged(position);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,15 +175,23 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
             String name = data.getStringExtra("NAME");
             String date = data.getStringExtra("DATE");
             int frequency = data.getIntExtra("DAYS", 0);
+            int state = data.getIntExtra("STATE", 0);
             int id = data.getIntExtra("ID", 0);
             try {
-                adapter.update(id, name, frequency, date);
+                adapter.update(id, name, frequency, date, state);
                 adapter.notifyItemChanged(id);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else if(resultCode == ADD_PLANT_ACTIVITY){
-
+            String name = data.getStringExtra("NAME");
+            int frequency = data.getIntExtra("DAYS", 0);
+            try {
+                Plant plant = adapter.insertPlant(name, frequency, 1);
+                adapter.notifyItemInserted(listFlowers.indexOf(plant));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

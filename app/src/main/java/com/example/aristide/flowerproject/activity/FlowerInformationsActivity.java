@@ -16,7 +16,10 @@ import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class FlowerInformationsActivity extends AppCompatActivity {
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
@@ -63,6 +66,24 @@ public class FlowerInformationsActivity extends AppCompatActivity {
                     i.putExtra("NAME", editTextPlainTextInput.getText().toString());
                     i.putExtra("DAYS", Integer.valueOf(editTextNumberInput.getText().toString()));
                     i.putExtra("ID", id);
+
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = null;
+                    try {
+                        date = sdf.parse(year+"-"+month+"-"+day);
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                    cal.setTime(date);
+
+                    if(cal.before(new Date())){
+                        i.putExtra("STATE", 3);
+                    }else if(cal.equals(new Date())){
+                        i.putExtra("STATE", 1);
+                    }else{
+                        i.putExtra("STATE", 2);
+                    }
                     setResult(MainActivity.EDIT_PLANT_ACTIVITY, i);
                     finish();
                 } catch (Exception e) {

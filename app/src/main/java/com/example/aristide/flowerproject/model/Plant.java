@@ -10,7 +10,7 @@ public class Plant {
     private String name;
     private String date;
     private int imageResId;
-    private int state;
+    private int imageState;
     private int days;
 
     public String getName() {
@@ -35,9 +35,13 @@ public class Plant {
         this.imageResId = imageResId;
     }
 
-    public int getState() { return state; }
+    public int getImageState() {
+        return imageState;
+    }
 
-    public void setState(int state) { this.state = state; }
+    public void setImageState(int imageState) {
+        this.imageState = imageState;
+    }
 
     public String getDate() { return date; }
 
