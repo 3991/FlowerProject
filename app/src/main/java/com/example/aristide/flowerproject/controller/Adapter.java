@@ -1,6 +1,7 @@
 package com.example.aristide.flowerproject.controller;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import com.example.aristide.flowerproject.DataBase.DataBase;
 import com.example.aristide.flowerproject.model.Plant;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -25,8 +25,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     private List<Plant> listPlants;
     private LayoutInflater inflater;
     private DataBase database;
-
     public static final int _ERROR = -1;
+    public static final int _GOOD = 1;
+    public static final int _WARNING = 2;
+    public static final int _LATE = 3;
 
     private ItemClickCallback itemClickCallback;
 
@@ -39,12 +41,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         this.itemClickCallback = itemClickCallback;
     }
 
-    public Adapter(List<Plant> listPlants, Context context){
+    public Adapter(Context context){
         this.inflater = LayoutInflater.from(context);
 
         database = new DataBase(context);
 
         this.listPlants = database.getFlowers();
+    }
+
+    public List<Plant> getPlants(){
+        return this.listPlants;
     }
 
     public void init() throws Exception {
@@ -64,7 +70,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         Plant item = listPlants.get(position);
         holder.name.setText(item.getName());
         holder.days.setText(String.valueOf(item.getDays()));
-        holder.icon_flower.setImageResource(item.getImageResId());
+        holder.icon_flower.setImageResource(item.getImageResId());Log.wtf("STATEf",""+ item.getState());
+        if(item.getState() == _LATE){
+            holder.im_icon_state.setImageResource(R.drawable.warning_red_icon);
+        }else if(item.getState() == _WARNING){
+            holder.im_icon_state.setImageResource(R.drawable.warning_orange_icon);
+        }else{
+            holder.im_icon_state.setImageResource(R.drawable.check_icon);
+        }
+
     }
 
     @Override
@@ -88,13 +102,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             item.setName(name);
             item.setDays(frequency);
             item.setDate(date);
-            if(state == 1){
+            item.setState(1);
+            /*if(state == 1){
                 item.setImageState(R.drawable.check_icon);
             }else if(state == 2){
                 item.setImageState(R.drawable.warning_orange_icon);
             }else{
                 item.setImageState(R.drawable.warning_red_icon);
-            }
+            }*/
             listPlants.add(item);
         }else{
             throw new Exception("Error to put a new plant");
@@ -120,14 +135,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             listPlants.get(id).setName(name);
             listPlants.get(id).setDays(frequency);
             listPlants.get(id).setDate(date);
-
-            if(state == 1){
+            listPlants.get(id).setState(state);
+            /*if(state == 1){
                 listPlants.get(id).setImageState(R.drawable.check_icon);
             }else if(state == 2){
                 listPlants.get(id).setImageState(R.drawable.warning_orange_icon);
             }else{
                 listPlants.get(id).setImageState(R.drawable.warning_red_icon);
-            }
+            }*/
         }else{
             throw new Exception("Error to update a new plant");
         }
@@ -145,6 +160,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         private TextView name;
         private TextView days;
         private ImageView icon_flower;
+        private ImageView im_icon_state;
         private View container;
 
         public Holder(View itemView) {
@@ -153,6 +169,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             name = (TextView)itemView.findViewById(R.id.lbl_text_name);
             days = (TextView)itemView.findViewById(R.id.lbl_text_days);
             icon_flower = (ImageView)itemView.findViewById(R.id.im_icon_flower);
+            im_icon_state = (ImageView)itemView.findViewById(R.id.im_icon_state);
 
             container = itemView.findViewById(R.id.cont_item_root);
             container.setOnClickListener(this);

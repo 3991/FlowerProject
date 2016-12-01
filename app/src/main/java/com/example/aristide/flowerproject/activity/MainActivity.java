@@ -16,8 +16,9 @@ import com.example.aristide.flowerproject.controller.Adapter;
 import com.example.aristide.flowerproject.model.Plant;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 //SUPP en DB dans SWIPE
-//long clique : mis à jour de l'icone
 //gestion de l'icone en fonction de la date
 
 public class MainActivity extends AppCompatActivity implements Adapter.ItemClickCallback  {
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     private RecyclerView recyclerView;
     private Adapter adapter;
-    private ArrayList listFlowers;
+    private List<Plant> listFlowers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +38,13 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        listFlowers = new ArrayList();
+        //listFlowers = new ArrayList();
 
         recyclerView = (RecyclerView)findViewById(R.id.rec_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new Adapter(listFlowers, this);
+        adapter = new Adapter(this);
+        listFlowers = adapter.getPlants();
 
         try {
             //adapter.init();
@@ -97,14 +99,14 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
      */
     @Override
     public void onItemClick(int position) {
-        Plant item = (Plant) listFlowers.get(position);
+        Plant item = listFlowers.get(position);
 
         Intent intent = new Intent(getApplicationContext(), FlowerInformationsActivity.class);
 
         Bundle extras = new Bundle();
         extras.putInt("ID", position);
         extras.putString("NAME", item.getName());
-        extras.putString("DAYS", String.valueOf(item.getDays()));Log.wtf("DATER", item.getDate());
+        extras.putString("DAYS", String.valueOf(item.getDays()));
         extras.putString("DATE", item.getDate());
         intent.putExtra(BUNDLE_EXTRAS, extras);
 
@@ -112,17 +114,19 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     }
 
     /**
-     *
+     *  Changement of the state of the plant
+     *  And new last Date of watering
      * @param position
      */
     public void onLongListItemClick(int position) {
-        Plant plant = (Plant) listFlowers.get(position);
+        Plant plant = listFlowers.get(position);
+
         try {
-            adapter.update(position, plant.getName(), plant.getDays(), plant.getDate(), 3);
-            adapter.notifyItemChanged(position);
+            adapter.update(position, plant.getName(), plant.getDays(), new Date().toString(), 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        adapter.notifyItemChanged(position);
     }
 
     /**

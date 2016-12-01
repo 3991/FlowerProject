@@ -12,6 +12,7 @@ public class Plant {
     private int imageResId;
     private int imageState;
     private int days;
+    private int state;
 
     public String getName() {
         return name;
@@ -46,4 +47,10 @@ public class Plant {
     public String getDate() { return date; }
 
     public void setDate(String date) { this.date = date; }
+
+    public int getState() {return state; }
+
+    public void setState(int state) {
+        this.state = state;
+    }
 }

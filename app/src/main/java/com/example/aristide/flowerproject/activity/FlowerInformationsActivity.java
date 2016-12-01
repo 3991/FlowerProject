@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
+import com.example.aristide.flowerproject.controller.Adapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,18 +72,18 @@ public class FlowerInformationsActivity extends AppCompatActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = null;
                     try {
-                        date = sdf.parse(year+"-"+month+"-"+day);
+                        date = sdf.parse(year+"-"+month+"-"+day+Integer.valueOf(editTextNumberInput.getText().toString()));
                     } catch (ParseException e1) {
                         e1.printStackTrace();
                     }
                     cal.setTime(date);
 
                     if(cal.before(new Date())){
-                        i.putExtra("STATE", 3);
+                        i.putExtra("STATE", Adapter._LATE);
                     }else if(cal.equals(new Date())){
-                        i.putExtra("STATE", 1);
+                        i.putExtra("STATE",  Adapter._WARNING);
                     }else{
-                        i.putExtra("STATE", 2);
+                        i.putExtra("STATE",  Adapter._GOOD);
                     }
                     setResult(MainActivity.EDIT_PLANT_ACTIVITY, i);
                     finish();
