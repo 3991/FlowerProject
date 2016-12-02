@@ -1,16 +1,13 @@
 package com.example.aristide.flowerproject.model;
 
 /**
- * POJO
- * Each item in the recylerview is an Plant object
  *
+ * Each item in the recylerview is an Plant object
  */
-
 public class Plant {
     private String name;
     private String date;
     private int imageResId;
-    private int imageState;
     private int days;
     private int state;
 
@@ -34,14 +31,6 @@ public class Plant {
 
     public void setImageResId(int imageResId) {
         this.imageResId = imageResId;
-    }
-
-    public int getImageState() {
-        return imageState;
-    }
-
-    public void setImageState(int imageState) {
-        this.imageState = imageState;
     }
 
     public String getDate() { return date; }

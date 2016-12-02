@@ -7,11 +7,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 
 import static android.R.attr.id;
-import static com.example.aristide.flowerproject.R.id.editTextNumberInput;
 
 /**
  *
@@ -31,12 +31,18 @@ public class AddPlantActitvy extends AppCompatActivity {
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent();
-                i.putExtra("NAME", ((EditText) findViewById(R.id.editTextPlainTextInput)).getText().toString());
-                i.putExtra("DAYS", Integer.valueOf(((EditText) findViewById(R.id.editTextNumberInput)).getText().toString()));
-                i.putExtra("ID", id);
-                setResult(MainActivity.ADD_PLANT_ACTIVITY, i);
-                finish();
+                String name = ((EditText) findViewById(R.id.editTextPlainTextInput)).getText().toString();
+                String fequency = ((EditText) findViewById(R.id.editTextNumberInput)).getText().toString();
+                if(name.isEmpty() || fequency.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Incomplet", Toast.LENGTH_LONG).show();
+                }else{
+                    Intent i = new Intent();
+                    i.putExtra("NAME", ((EditText) findViewById(R.id.editTextPlainTextInput)).getText().toString());
+                    i.putExtra("DAYS", Integer.valueOf(((EditText) findViewById(R.id.editTextNumberInput)).getText().toString()));
+                    i.putExtra("ID", id);
+                    setResult(MainActivity.ADD_PLANT_ACTIVITY, i);
+                    finish();
+                }
             }
         });
     }

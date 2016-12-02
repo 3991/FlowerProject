@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
@@ -24,10 +22,8 @@ import java.util.Date;
 
 public class FlowerInformationsActivity extends AppCompatActivity {
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
-    private static final String EXTRA_QUOTE = "EXTRA_QUOTE";
     private static final String EXTRA_ATTR = "EXTRA_ATTR";
 
-    private DatePicker datePicker;
     private Calendar calendar;
     private TextView dateView;
     private int year, month, day;
@@ -43,9 +39,7 @@ public class FlowerInformationsActivity extends AppCompatActivity {
 
         final Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
 
-        //((TextView)findViewById(R.id.lbl_plant_name)).setText(extras.getString(EXTRA_QUOTE));
         ((TextView)findViewById(R.id.lbl_plant_day)).setText(extras.getString(EXTRA_ATTR));
-        //((TextView)findViewById(R.id.lbl_plant_day)).getText()
 
         final EditText editTextPlainTextInput = (EditText) this.findViewById(R.id.editTextPlainTextInput);
         editTextPlainTextInput.setText(extras.getString("NAME"));
@@ -58,6 +52,14 @@ public class FlowerInformationsActivity extends AppCompatActivity {
 
         final int id = extras.getInt("ID");
 
+        dateView = (TextView) findViewById(R.id.textView_date);
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        //showDate(year, month+1, day);
+
         Button modifPlant = (Button) findViewById(R.id.btn_edit_plant);
         modifPlant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +69,7 @@ public class FlowerInformationsActivity extends AppCompatActivity {
                     i.putExtra("NAME", editTextPlainTextInput.getText().toString());
                     i.putExtra("DAYS", Integer.valueOf(editTextNumberInput.getText().toString()));
                     i.putExtra("ID", id);
+                    i.putExtra("DATE", dateView.getText().toString());
 
                     Calendar cal = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -78,9 +81,9 @@ public class FlowerInformationsActivity extends AppCompatActivity {
                     }
                     cal.setTime(date);
 
-                    if(cal.before(new Date())){
+                    if(cal.before(extras.getString("CURRENTDATE"))){
                         i.putExtra("STATE", Adapter._LATE);
-                    }else if(cal.equals(new Date())){
+                    }else if(cal.equals(extras.getString("CURRENTDATE"))){
                         i.putExtra("STATE",  Adapter._WARNING);
                     }else{
                         i.putExtra("STATE",  Adapter._GOOD);
@@ -92,16 +95,6 @@ public class FlowerInformationsActivity extends AppCompatActivity {
                 }
             }
         });
-
-        dateView = (TextView) findViewById(R.id.textView_date);
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month+1, day);
-
-
     }
     @SuppressWarnings("deprecation")
     public void setDate(View view) {
@@ -117,9 +110,8 @@ public class FlowerInformationsActivity extends AppCompatActivity {
         return null;
     }
 
-    /**
-     *
-     */
+
+
     private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker arg0, int year, int month, int day) {
@@ -129,9 +121,9 @@ public class FlowerInformationsActivity extends AppCompatActivity {
 
     /**
      *
-     * @param year
-     * @param month
-     * @param day
+     * @param year concerned
+     * @param month of the year
+     * @param day of the month
      */
     private void showDate(int year, int month, int day) {
         dateView.setText(new StringBuilder().append(day).append("/")

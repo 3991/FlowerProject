@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">Arrosage</string>
-    <string name="generate_button">Générer</string>
-    <string name="add_button">Ajouter</string>
+    <string name="generate_button">Générer 10 plantes</string>
+    <string name="add_button">Ajouter une plante</string>
     <string name="edit_date_button">Modifier la date</string>
     <string name="date_textView"></string>
     <string name="ok_button">Valider</string>
-    <string name="frequency_textView">Fréquence</string>
+    <string name="frequency_textView">Fréquence (jours)</string>
     <string name="name_textView">Nom</string>
+    <string name="change_date">Changer la date</string>
 </resources>

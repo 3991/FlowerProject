@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.controller.Adapter;
@@ -16,9 +15,7 @@ import java.util.ArrayList;
 
 
 
-/**
- *
- */
+
 public class DataBase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Plants";
@@ -45,30 +42,9 @@ public class DataBase extends SQLiteOpenHelper {
         public static final String STATE = "state";
     }
 
-    /**
-     *
-     * @return a list of names
-     */
-    public ArrayList<String> getFlowersNames() {
-        ArrayList<String> names = new ArrayList<>();
-
-        SQLiteDatabase db = getReadableDatabase();
-        String[] fields = {
-                FlowerTable.PLANT_NAME, FlowerTable.FREQUENCY_NUMBER, FlowerTable.LAST_WATER_DATE
-        };
-        Cursor cursor = db.query(FlowerTable.TABLE_NAME, fields, null, null, null, null, null);
-
-        cursor.moveToFirst();
-
-        while (!cursor.isAfterLast()) {
-            names.add(cursor.getString(0));
-            cursor.moveToNext();
-        }
-        return names;
-    }
 
     /**
-     *
+     *  Get a list of flowers
      * @return a list of names
      */
     public ArrayList<Plant> getFlowers() {
@@ -112,32 +88,6 @@ public class DataBase extends SQLiteOpenHelper {
         return result;
     }
 
-
-
-    /**
-     *  To select the plant by ID
-     * @param id of the plant
-     * @return row a name and the frequency
-     */
-    /*public String[] selectPlant(int id){
-        SQLiteDatabase db = getReadableDatabase();
-        if (db == null) {
-            return null;
-        }
-        String[] row = {"",""};
-        Cursor cursor = db.rawQuery("SELECT name, frequency FROM Plant WHERE id = ?", new String[] { String.valueOf(id) });
-
-        if(cursor != null){
-            if (cursor.moveToNext()) {
-                row[0] = cursor.getString(0);
-                row[1] = String.valueOf(cursor.getInt(1));
-            }
-            cursor.close();
-        }
-        db.close();
-        return row;
-    }*/
-
     /**
      * Updates a row in the DB
      * @param id of the plant
@@ -159,15 +109,16 @@ public class DataBase extends SQLiteOpenHelper {
     }
 
     /**
-     *
-     * @param id
+     *  Delete a row in the DB
+     * @param id of the plant
+     * @return bool if request if O.K
      */
-    public void delete(int id) {
+    public boolean delete(int id) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         String where = "id = ?";
         String[] whereArgs = { String.valueOf(id) };
 
-        sqLiteDatabase.delete(FlowerTable.PLANT_NAME, where, whereArgs);
+        return sqLiteDatabase.delete(FlowerTable.PLANT_NAME, where, whereArgs) > 0;
     }
 }

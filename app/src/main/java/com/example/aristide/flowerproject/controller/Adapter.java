@@ -1,7 +1,6 @@
 package com.example.aristide.flowerproject.controller;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.aristide.flowerproject.R;
 import com.example.aristide.flowerproject.DataBase.DataBase;
 import com.example.aristide.flowerproject.model.Plant;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +31,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
     public static final int _GOOD = 1;
     public static final int _WARNING = 2;
     public static final int _LATE = 3;
+    private String currentDate;
 
     private ItemClickCallback itemClickCallback;
 
@@ -43,21 +46,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     public Adapter(Context context){
         this.inflater = LayoutInflater.from(context);
-
         database = new DataBase(context);
 
         this.listPlants = database.getFlowers();
+        setCurrentDate(getDateTime());
     }
 
     public List<Plant> getPlants(){
         return this.listPlants;
     }
 
-    public void init() throws Exception {
-        for(Plant ob : listPlants){
-            insertPlant(ob.getName(), ob.getDays(), ob.getImageState());
-        }
-    }
 
     @Override
     public Adapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -70,7 +68,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         Plant item = listPlants.get(position);
         holder.name.setText(item.getName());
         holder.days.setText(String.valueOf(item.getDays()));
-        holder.icon_flower.setImageResource(item.getImageResId());Log.wtf("STATEf",""+ item.getState());
+        holder.icon_flower.setImageResource(item.getImageResId());
         if(item.getState() == _LATE){
             holder.im_icon_state.setImageResource(R.drawable.warning_red_icon);
         }else if(item.getState() == _WARNING){
@@ -78,7 +76,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         }else{
             holder.im_icon_state.setImageResource(R.drawable.check_icon);
         }
-
     }
 
     @Override
@@ -89,27 +86,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     /**
      *  To call DB to insert a new plant
-     * @param name
-     * @param frequency
-     * @return
+     * @param name of the plant
+     * @param frequency last date of watering
+     * @return item inserted
      * @throws Exception
      */
-    public Plant insertPlant(String name, int frequency, int state) throws Exception {
+    public Plant insertPlant(String name, int frequency) throws Exception {
         Plant item = new Plant();
         String date = getDateTime();
-        if(database.insertPlant(name, frequency, date, state) != _ERROR){
+        //DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        //Calendar cal = Calendar.getInstance();
+        if(database.insertPlant(name, frequency, date, Adapter._GOOD) != _ERROR){
             item.setImageResId(R.drawable.red_flower);
             item.setName(name);
             item.setDays(frequency);
             item.setDate(date);
-            item.setState(1);
-            /*if(state == 1){
-                item.setImageState(R.drawable.check_icon);
-            }else if(state == 2){
-                item.setImageState(R.drawable.warning_orange_icon);
-            }else{
-                item.setImageState(R.drawable.warning_red_icon);
-            }*/
+            item.setState(Adapter._GOOD);
             listPlants.add(item);
         }else{
             throw new Exception("Error to put a new plant");
@@ -119,14 +111,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                "dd-MM-yyyy", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
     }
 
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
+
     /**
      * Updates a row in the database
-     * @param id
+     * @param id of the plant
      * @param name The new name value
      * @param frequency The new frequency value
      */
@@ -136,21 +136,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             listPlants.get(id).setDays(frequency);
             listPlants.get(id).setDate(date);
             listPlants.get(id).setState(state);
-            /*if(state == 1){
-                listPlants.get(id).setImageState(R.drawable.check_icon);
-            }else if(state == 2){
-                listPlants.get(id).setImageState(R.drawable.warning_orange_icon);
-            }else{
-                listPlants.get(id).setImageState(R.drawable.warning_red_icon);
-            }*/
         }else{
             throw new Exception("Error to update a new plant");
         }
     }
 
     /**
-     *
-     * @param id
+     * Delete a plant in the database
+     * @param id of the plant
      */
     public void deletePlant(int id){
         database.delete(id);

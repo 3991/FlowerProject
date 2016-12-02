@@ -81,21 +81,6 @@
         android:text="@string/date_textView"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <!--<TextView
-        android:id="@+id/lbl_plant_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:gravity="center"
-        android:text="Date"
-        android:maxLines="1"
-        />
-
-    <EditText
-        android:id="@+id/editTextDateInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"  />-->
 
     <Button
         android:id="@+id/btn_edit_plant"
